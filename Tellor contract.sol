@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-
+//*old version== needs to be updated
 contract BtcPrice1HourAgoContract is UsingTellor {
 
   uint256 btcPrice;
