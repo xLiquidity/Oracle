@@ -1,6 +1,6 @@
 pragma solidity ^0.5.0;
 
-//*old version== needs to be updated
+
 contract BtcPrice1HourAgoContract is UsingTellor {
 
   uint256 btcPrice;
@@ -122,28 +122,20 @@ contract usdcPriceContract is UsingTellor {
         return (0, 0, descriptions.getStatusFromTellorStatus(0));
     }
 
-    function getDataBefore(uint256 _requestId, uint256 _timestamp, uint256 _limit, uint256 _offset)
+    function getDataBefore(uint256 _requestId, uint256 _timestamp)
         public
-        view
         returns (bool _ifRetrieve, uint256 _value, uint256 _timestampRetrieved)
     {
-        uint256 _count = _tellorm.getNewValueCountbyRequestId(_requestId);
-        if (_count > 0) {
-            for (uint256 i = _count - _offset; i < _count -_offset + _limit; i++) {
-                uint256 _time = _tellorm.getTimestampbyRequestIDandIndex(_requestId, i - 1);
-                if(_value > 0 && _time > _timestamp){
-                    return(true, _value, _timestampRetrieved);
-                }
-                else if (_time > 0 && _time <= _timestamp && _tellorm.isInDispute(_requestId,_time) == false) {
-                    _value = _tellorm.retrieveData(_requestId, _time);
-                    _timestampRetrieved = _time;
-                    if(i == _count){
-                        return(true, _value, _timestampRetrieved);
-                    }
-                }
-            }
-        }
+        
+        (bool _found, uint _index) = getIndexForDataBefore(_requestId,_timestamp);
+        if(!_found) return (false, 0, 0);
+        uint256 _time = tellor.getTimestampbyRequestIDandIndex(_requestId, _index);
+        _value = tellor.retrieveData(_requestId, _time);
+        //If value is diputed it'll return zero
+        if (_value > 0) return (true, _value, _time);
         return (false, 0, 0);
+    }
+}
     }
 }
 }
