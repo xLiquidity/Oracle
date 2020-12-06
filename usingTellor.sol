@@ -1,4 +1,5 @@
 pragma solidity ^0.5.0;
+import "usingtellor/contracts/UsingTellor.sol";
 
 
 contract BtcPrice1HourAgoContract is UsingTellor {
