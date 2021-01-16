@@ -20,8 +20,6 @@ contract BtcPrice1HourAgoContract is UsingTellor {
     if(_didGet){
       btcPrice = _value;
     }
-
-
   }
 }
 
