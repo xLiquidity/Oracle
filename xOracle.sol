@@ -14,7 +14,7 @@ contract BtcPrice1HourAgoContract is UsingTellor {
     uint _timestamp;
     uint _value;
 
-    // Get the price that is older than an hour (looking back at most 60 values)
+    // Get the price that is older than an hour
     (_didGet, _value, _timestamp) = getDataBefore(btcRequetId, now - 1 hours, 60, 0);
 
     if(_didGet){
